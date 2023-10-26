@@ -1,0 +1,1487 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AMC Mural Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <style type="text/css">@-ms-viewport{width:auto!important;}</style>
+    <link rel="stylesheet" type="text/css" href="glider.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <script src="glider.js"></script>
+    <script>
+      window.addEventListener('load',function(){
+        document.querySelector('.glider').addEventListener('glider-slide-visible', function(event){
+            var glider = Glider(this);
+            console.log('Slide Visible %s', event.detail.slide)
+        });
+        document.querySelector('.glider').addEventListener('glider-slide-hidden', function(event){
+            console.log('Slide Hidden %s', event.detail.slide)
+        });
+        document.querySelector('.glider').addEventListener('glider-refresh', function(event){
+            console.log('Refresh')
+        });
+        document.querySelector('.glider').addEventListener('glider-loaded', function(event){
+            console.log('Loaded')
+        });
+
+        window._ = new Glider(document.querySelector('.glider'), {
+            slidesToShow: 1, //'auto',
+            slidesToScroll: 5.5,
+            itemWidth: 650,
+            draggable: true,
+            scrollLock: false,
+            dots: false,
+            rewind: false,
+            arrows: {
+                prev: '.glider-prev',
+                next: '.glider-next'
+            },
+            responsive: [
+                {
+                    breakpoint: 800,
+                    settings: {
+                        slidesToScroll: 'auto',
+                        itemWidth: 300,
+                        slidesToShow: 'auto',
+                        exactWidth: true
+                    }
+                },
+                {
+                    breakpoint: 700,
+                    settings: {
+                        slidesToScroll: 4,
+                        slidesToShow: 4,
+                        dots: false,
+                        arrows: false,
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToScroll: 3,
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 500,
+                    settings: {
+                        slidesToScroll: 2,
+                        slidesToShow: 2,
+                        dots: false,
+                        arrows: false,
+                        scrollLock: true
+                    }
+                }
+            ]
+        });
+      });
+    </script>
+
+    <script>
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(1);
+    </script>
+
+    <style type="text/css">
+            * {
+                box-sizing: border-box
+            }
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                overflow:hidden;
+                background: #010101E0;
+                background: linear-gradient(0deg, #010101E0, #001A71E0);
+                font-family: 'Roboto Condensed', sans-serif;
+                font-weight: normal;
+                /* https://modernfontstacks.com/ */
+            }
+            .glider-contain {
+                width: 100%;
+                margin: auto;
+            }
+            .glider-slide {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 200px;
+                border: 1px solid #000;
+            }
+            .glider-slide img {
+                width: 100%;
+            }
+            .glider-slide .slide-title {
+
+                font-size: 3rem;
+                position: relative;
+                top: 100px;
+            }
+
+
+            /** Modal styles **/
+            [id^=modal] {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+            }
+            [id^=modal]:target {
+                display: block;
+            }
+            input[type=checkbox] {
+                position: absolute;
+                clip: rect(0 0 0 0);
+            }
+            .popup {
+                width: 80%;
+                height: 80%;
+                z-index: 99999;
+            }
+            .popup__overlay {
+                position: fixed;
+                z-index: 1;
+                display: block;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: #000000b3;
+            }
+            .popup__wrapper {
+                position: fixed;
+                z-index: 9;
+                width: 80%;
+                max-width: 80%;
+                max-height: 90%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 10px 30px;
+                background: #ececec;
+                overflow-y: scroll;
+            }
+
+            .popup__close {
+                position: absolute;
+                top: 16px;
+                right: 26px;
+                display: inline-block;
+                background: #000;
+                color: #fff;
+                border-radius: 50px;
+                padding: 10px 20px;
+            }
+
+            .popup__close2 {
+                display: block;
+                background: linear-gradient(0deg, #000, #272727e0);
+                color: #ececec;
+                text-align: center;
+                padding: 15px;
+                margin: 10px 0;
+                font-size: 24px;
+                border-radius: 50px;
+            }
+
+            a.popup__close, a.popup__close2 {
+                text-decoration: none;
+            }
+
+            .modal-panel {
+                float:left;
+                max-width: 24%;
+                margin-right: 2%;
+            }
+
+            .modal-panel img {
+                max-height: 690px;
+                border-radius: 30px;
+            }
+
+            .modal-content {
+                margin-left: 365px;
+                max-width: 90%;
+            }
+
+            .modal-content .diduknow {
+                width:35%;
+                float:right;
+                background: #2a4593;
+                color: #fff;
+                border-radius: 35px;
+                padding: 8px 20px;
+                margin: 0 0 25px 25px;
+
+            }
+
+            .modal-content hr {
+                clear:right;
+            }
+
+            .modal-content h2 {
+                font-size: 170%;
+            }
+
+            .modal-content p {
+                font-size: 135%;
+            }
+
+            .modal-content img.prof {
+                border: 1px solid #ccc;
+                padding: 5px;
+                width: 170px;
+                float:right;
+                margin: 0 0 5px 20px;
+            }
+
+            figure {
+                float: left;
+                text-align: center;
+                font-style: italic;
+                font-size: smaller;
+                text-indent: 0;
+                border: thin silver solid;
+                margin: 0 0.5em 0.5em 0;
+                padding: 0.5em;
+            }
+
+            figure img {
+                width: 170px;
+                margin: 3px;
+            }
+
+            img.scaled {
+                width: 100%;
+            }
+
+            .modal-content .diduknow p {
+                font-size: 100%;
+            }
+
+
+            /* Header Area Styles */
+            #header {
+                border: none;
+                margin: 0px 170px 10px;
+                color: #ececec;
+                text-align: center;
+            }
+            #header h1 {
+                font-size: 300%;
+                margin: 30px 0 20px 0;
+            }
+
+            #header h2 {
+
+            }
+
+            #header p, #header .instruction {
+                font-size: 140%;
+            }
+
+            #header .arrows {
+                font-size: 110%;
+                font-weight: 900;
+            }
+
+
+            /* Footer Area Styles*/
+
+            #footer {
+
+
+            }
+            #footer p {
+                text-align:center;
+            }
+            #footer a {
+                color: #ececec;
+                text-decoration: none;
+            }
+
+            .instruction {
+                background: #2e50c3e0;
+                border-radius: 8px;
+                padding: 16px;
+                margin: 0 auto 25px auto;
+                max-width: 1500px;
+            }
+
+    </style>
+
+</head>
+<body>
+
+    <div id="header">
+        <h1>Hidden Heroes of Aerospace Mural</h1>
+
+        <h2>Journey through time to discover some of the hidden heroes of aerospace...</h2>
+
+        <p><strong>Look up!</strong> In the mural above you (along the bottom of the second floor railing), each panel portrays unique and inspiring figures in aerospace history.<br />
+        From early pioneers who dared to build flying machines, to the modern astronauts and engineers propelling us toward the frontiers of space,<br />
+        these remarkable individuals have utilized their ingenuity, creativity, and courage to revolutionize flight and aerospace.</p>
+
+        <div class="instruction"><span class="arrows">&#8608;</span>&nbsp;&nbsp; LEARN MORE: Touch and drag the mural panels below to scroll through them - and tap on any individual panel to learn about the subjects portrayed in each! &nbsp;&nbsp;<span class="arrows">&#8606;</span></div>
+    </div>
+
+    <div class="glider-contain">
+        <div class="glider">
+            <div><a href="#modal1"><img src="panels/1.jpg"></a></div>
+            <div><a href="#modal2"><img src="panels/2.jpg"></a></div>
+            <div><a href="#modal3"><img src="panels/3.jpg"></a></div>
+            <div><a href="#modal4"><img src="panels/4.jpg"></a></div>
+            <div><a href="#modal5"><img src="panels/5.jpg"></a></div>
+            <div><a href="#modal6"><img src="panels/6.jpg"></a></div>
+            <div><a href="#modal7"><img src="panels/7.jpg"></a></div>
+            <div><a href="#modal8"><img src="panels/8.jpg"></a></div>
+            <div><a href="#modal9"><img src="panels/9.jpg"></a></div>
+            <div><a href="#modal10"><img src="panels/10.jpg"></a></div>
+            <div><a href="#modal11"><img src="panels/11.jpg"></a></div>
+            <div><a href="#modal12"><img src="panels/12.jpg"></a></div>
+            <div><a href="#modal13"><img src="panels/13.jpg"></a></div>
+            <div><a href="#modal14"><img src="panels/14.jpg"></a></div>
+            <div><a href="#modal15"><img src="panels/15.jpg"></a></div>
+            <div><a href="#modal16"><img src="panels/16.jpg"></a></div>
+            <div><a href="#modal17"><img src="panels/17.jpg"></a></div>
+            <div><a href="#modal18"><img src="panels/18.jpg"></a></div>
+            <div><a href="#modal19"><img src="panels/19.jpg"></a></div>
+            <div><a href="#modal20"><img src="panels/20.jpg"></a></div>
+            <div><a href="#modal21"><img src="panels/21.jpg"></a></div>
+            <div><a href="#modal22"><img src="panels/22.jpg"></a></div>
+            <div><a href="#modal23"><img src="panels/23.jpg"></a></div>
+            <div><a href="#modal24"><img src="panels/24.jpg"></a></div>
+            <div><a href="#modal25"><img src="panels/25.jpg"></a></div>
+            <div><a href="#modal26"><img src="panels/26.jpg"></a></div>
+            <div><a href="#modal27"><img src="panels/27.jpg"></a></div>
+            <div><a href="#modal28"><img src="panels/28.jpg"></a></div>
+        </div>
+        <button class="glider-prev">&laquo;</button>
+        <button class="glider-next">&raquo;</button>
+        <div id="dots"></div>
+    </div>
+
+    <div id="footer">
+        <p><a href="#modal29">To learn more about the Hidden Heroes Mural project tap here.</a></p>
+    </div>
+
+
+    <div class="popup" id="modal1">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            <div class="modal-panel">
+                <img src="panels/1.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Chinese Kites</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>The first Chinese kites were used for measuring distances, which was useful information for moving large armies across difficult terrain. They were also used to calculate and record wind readings and provided a unique form of communication similar to ship flags at sea.</p>
+                </div>
+    
+                <p><img class="prof" src="images/kites.jpg" />The Book of Mozi credits 5th Century BCE Chinese philosophers Mozi and Lu Ban with inventing the first kites. Mozi made "wooden birds" that could fly and instructed his student, Lu Ban, to do the same. Lu Ban used bamboo as it was lighter and created a "wooden bird" capable of remaining in the air for three days and holding a person. The Book of Mozi contains the earliest mentions of kites, and while they are folkloric in nature, the use of kites in China for military purposes remained constant throughout later records and for centuries.</p>
+
+                <hr />
+
+                <h2>Leonardo da Vinci</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Many of Leonardo's journals were written in reverse. There are many theories why this might have been the case, but the prevailing one is that it's because he was left-handed. If he had written from left to right, he might have smudged his writing and ruined his work. It may have also been a way for Leonardo to keep his writings private. Da Vinci was known for his creativity and inventiveness, so it's no surprise that he would create such a unique and practical solution.</p>
+                </div>
+    
+                <p><img class="prof" src="images/da-vinci.jpg" />We know Leonardo da Vinci as one of the greatest artists to have ever lived, but he was also an early inventor and visionary who applied his creative genius to explore the possibilities of flight. In the 1480s, he used his passion for understanding the mechanics of how things worked to conceive early flying machines, including the aerial screw (helicopter), the ornithopter, parachute, and hang glider.</p>
+                 
+                <p>Da Vinci kept his sketches of wings and flying machines hidden away, but 400 years later his work was discovered. It is incredible to consider that he was able to envision such innovative concepts hundreds of years before they were built and flown. Da Vinci was truly a genius who left behind a legacy of invention and creative inspiration.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+    
+
+    <div class="popup" id="modal2">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/2.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Isaac Newton</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Because electricity had not yet been discovered, Sir Isaac Newton did most of his work by candlelight. He had a favorite dog named Diamond, and one day the dog accidentally knocked over a candle and set fire to manuscripts containing his notes from over 20 years of experiments.  Fortunately, Newton was able to persevere, recover from his loss, and continue to make great contributions to science and humanity.</p>
+                </div>
+    
+                <p><img class="prof" src="images/newton.jpg" />In approximately 1665, Isaac Newton observed an apple falling off a tree branch and asked why it fell downward instead of up or sideways. This insight led him to develop the law of gravity, which explains why objects move the way they do. Newton's three laws of motion further explain the motion of objects in the universe and allow us to calculate and make scientifically precise predictions. Newton's work was revolutionary and laid the foundation for the development of modern physics and engineering. Newton's discoveries have helped us understand the world around us and continue to be relevant to this day.</p>
+
+                <hr />
+
+                <h2>Baptiste Henri Jacques Giffard</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Giffard created the first steam injector that replaced the need for large and heavy mechanical pumps on steam-powered machines. His steam injector invention was critical to the advancement of controlled and powered flight.</p>
+                </div>
+    
+                <p><img class="prof" src="images/giffard.jpg" />Baptiste Henri Jacques Giffard of France constructed the first successful controlled dirigible in 1852, a major milestone in the history of aviation. His creation of a three-horsepower steam engine capable of turning a propeller allowed him to maintain controlled and powered flight.</p>
+
+                <hr />
+
+                <h2>Hot air balloon</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Two months earlier, on September 19, 1783, their first hot air balloon flight was an innovative experiment witnessed by King Louis XVI, Marie Antoinette, and over 130,000 civilians. For scientific reasons, the Montgolfier brothers chose three animals as the first passengers: a sheep, a duck, and a rooster. The sheep was thought to have similar psychological traits to humans; the duck was chosen for its ability to fly at high altitudes; and the rooster, which can't fly, was chosen to measure the altitude limits of a non-flying bird. The animals survived the flight and were hailed as "heroes of the air." King Louis XVI rewarded them with a special place in the Menagerie at the Palace of Versailles.</p>
+                </div>
+    
+                <p><img class="prof" src="images/balloon.jpg" />French brothers Joseph-Michel Montgolfier and Jacques-&#x00C9;tienne Montgolfier were the inventors of the first manned hot air balloon. On November 21, 1783, they successfully conducted the first untethered manned aircraft flight with their hot air balloon in the presence of King Louis XVI. The balloon, made of paper and silk, ascended to an amazing 3,000 feet above Paris and traveled about 5 miles before landing outside the city ramparts. Jean-Fran&#x00E7;ois Pil&#x00E2;tre de Rozier and Fran&#x00E7;ois Laurent d'Arlandes became the first humans to ever be lifted aloft.</p>
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal3">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/3.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Wright Brothers</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Thanks to a coin toss, Orville was the first brother to be airborne. However, the two brothers only ever flew together once. This was due to a promise they made to their father, who didn't want to lose both sons in an accident. He made one exception, when they flew together for 6 minutes near Dayton, Ohio. Upon landing, Orville took his father on his one and only flight, and he's quoted as saying: "Higher, Orville, higher!"</p>
+                    <p>
+                        <figure>
+                            <img src="images/orville.jpg" />
+                            <figcaption>Orville Wright</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="images/wilbur.jpg" />
+                            <figcaption>Wilbur Wright</figcaption>
+                        </figure>
+                    </p>
+
+                </div>
+    
+                <p>Orville and Wilbur Wright were American inventors and pioneers of aviation. On December 17th, 1903, the Wright Brothers conducted the first successful flight of a powered, sustained, and controlled airplane. Orville piloted the craft, and the brothers managed to cover a distance of 120 feet in 12 seconds. They went on to complete three more flights that day, with their last attempt reaching 59 seconds of flight time.</p>
+
+
+
+                <p style="float:left;">
+                    <figure>
+                        <img src="images/wright-flyer-kitty-hawk-7580929.jpg" alt="Wright brothers first flight" style="width:600px;" />
+                        <figcaption>As brother Wilbur watches, Orville Wright flies the Wright Flyer at Kitty Hawk, NC, on December 17, 1903.<br /> The historic first powered flight lasted for 12 seconds and 120 feet. (PHOTO: National Archives)</figcaption>
+                    </figure>
+                </p>
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal4">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/4.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>James Herman Banning</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Since no flying school would accept him, James built his own airplane, named Miss Ames, with an engine that he recovered from a crashed airplane.</p>
+                </div>
+    
+                <p><img class="prof" src="images/banning.jpg" />James Herman Banning developed an interest in aviation during a plane ride at a circus. He tried to apply to flight schools but was rejected each time and instead paid a retired WWI pilot to give him private flying lessons in Des Moines, Iowa. In 1926, he became the first African American to be granted a federal pilot's license. After receiving his license, he accepted the position of chief flight instructor at the Bessie Coleman Aero Club in Los Angeles and partnered with aviator Thomas Allen to become the first African American aviator to fly coast to coast.</p>
+
+                <hr />
+
+                <h2>Charles Lindbergh</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>After spending most of his life working on the mechanics of airplanes, Lindbergh turned his attention towards biology. His development of a pump to keep an organ functioning outside of the body was groundbreaking and allowed for the possibility of creating artificial organs. His invention has helped save countless lives.</p>
+                </div>
+    
+                <p><img class="prof" src="images/lindbergh.jpg" />Twenty-five-year-old Charles Lindbergh made the first non-stop solo transatlantic flight in 1927 from New York to Paris in the Spirit of St. Louis, a custom-built Ryan NY-P. This aircraft had been specially designed to accommodate the longer wings and fuselage needed for the 33&frac12; hour journey. It was also equipped to carry the extra fuel required for the flight, which was stored in the nose and wings of the plane. It's amazing to think about the courage and skill of Lindbergh in making such a daring journey nearly a century ago.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal5">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/5.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Dr. Robert Hutchings Goddard</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>At age 16, Goddard read H.G. Wells' 1898 science fiction novel The War of the Worlds, which inspired his interest in making space travel a reality. His admiration for Wells' work was evident in the letter he sent six years later, in which he declared that the novel had made a profound impression on him and that his passion for space exploration Goddard wrote, "There can be no thought of finishing, for "aiming at the stars," both literally and figuratively, is a problem to occupy generations." In 1959, the newly established National Aeronautics and Space Administration (NASA) named the Goddard Space Flight Center in his honor.</p>
+                </div>
+    
+                <p>Dr. Robert Hutchings Goddard, the father of modern rocketry, successfully launched the first liquid-fueled  rocket in 1926 at his aunt's home in Auburn, Massachusetts. The rocket rose 41 feet and landed 184 feet away in 2.5 seconds. In 1929, one of his rocket launches carried the first scientific payload: a barometer and a camera, ushering in a new era of aerospace.</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/goddard-rocket.jpg" alt="Goddard and team" style="width:600px;" />
+                        <figcaption>Goddard and his team work on a rocket without its out casing in Roswell, N.M. in 1940. Left to right are Goddard, machinist Nils Ljungquist, machinist and Goddard's brother-in-law Albert Kisk; and welder Charles Mansur<br />(PHOTO: U.S. Air Force)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal6">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/6.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Harriet Quimby</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Quimby decided she would make the impressive and dangerous feat of crossing the English Channel in 1912. This had been done by a handful of other pilots, but never by a woman. Wearing her plum-colored satin flying suit that she designed herself, Harriet managed this amazing feat, having only missed her target destination by 25 miles. However, her accomplishment was wildly overshadowed by another historic event that had happened two days earlier: the sinking of the Titanic.</p>
+                </div>
+    
+                <p><img class="prof" src="images/quimby.jpg" />Harriet Quimby was the first woman in the United States to obtain a pilot's license. She received her license on August 1, 1911, after attaining a height of 200 feet. High-flying Harriet Quimby blazed the trail and proved cockpits aren't just for men. In 1912, she became the first female pilot to fly at night and cross the English Channel. British pilot Gustav Hamel offered to help her fake the flight by wearing her signature purple flying suit and switching places with her later. Harriet declined, and on April 16th, 1912, she successfully completed her mission despite blinding fog and having to rely solely on her compass to navigate.</p>
+
+                <hr />
+
+                <h2>Glenn Hammond Curtiss</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Curtiss was known as the "Fastest man on Earth,' when he installed his own air-cooled, 40-horsepower V-8 engine on a bicycle and went 136 miles per hour on Ormond Beach, Florida, in 1907!</p>
+                </div>
+    
+                <p><img class="prof" src="images/curtiss.jpg" />At an early age, Glenn Hammond Curtiss began to experiment with motors by adding them to his bicycles to convert them into motorcycles. His experiments turned into a career, and in 1902 he began the G.H. Curtiss Manufacturing Company, which created engines for motorcycles. He soon moved toward aviation when he attached an engine to the California Arrow, the first American dirigible. Curtiss later joined the Aerial Experiment Association (AEA) and soon began producing engines for the United States Navy, earning him the title "Father of Naval Aviation." </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal7">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/7.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Bessie Coleman</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Bessie's first career choice was to be a manicurist. She was known as the best and fastest manicurist within Chicago's Black community. She even landed a job at the White Sox Barber Shop. However, she changed careers when her brother came back from the war and teased her about how French women were permitted to learn to fly airplanes, but American women like Bessie couldn't fly. This inspired her to move to France to become a pilot.</p>
+                </div>
+    
+                <p><img class="prof" src="images/coleman.jpg" />While living in Chicago in 1915, Bessie Coleman became fascinated with aviation by reading stories about WWI pilots. She applied to flight schools but was rejected each time because of her race. She refused to give up and instead focused on learning French. She was eventually accepted to the Caudron Brothers School of Aviation in France, and on June 15th, 1921, she became the first Black woman to earn a pilot's license.</p>
+                
+                <p>Bessie specialized in stunt flying and parachuting and became popular for her stunning performances. After returning to America, she toured the country to raise money for an aviation school for African Americans. Before this dream could be realized, she tragically lost her life in 1926 during practice for an aerial show.</p>
+
+                <hr />
+
+                <h2>Eugene Jacques Bullard</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Bullard flew with a mascot, a Rhesus monkey named Jimmy. He decorated his Spad VII with a bleeding red heart and a dagger on the fuselage side, along with the slogan "Tout sang que coule est rouge," which translates to "All blood runs red." Eugene Bullard was posthumously commissioned as a second lieutenant in the U.S. Air Force in 1994. He is honored at the National Museum of the U.S. Air Force in Dayton, Ohio.</p>
+                </div>
+    
+                <p><img class="prof" src="images/bullard.jpg" />American-born Eugene Jacques Bullard ran away from home at the age of eleven and eventually made his way to France, working as a boxer. When WWI broke out, he enlisted in the French Foreign Legion and later applied to join the French Flying Service. He was accepted and served as the first African American pilot to fly in combat. When the United States entered the war in 1917, he attempted to enlist as a pilot with the U.S. Air Services but was rejected because of his race. Bullard is considered the first African-American military pilot to fly in combat and the only African-American pilot in WWI. Despite his many accomplishments, Bullard was never given the opportunity to fly for the United States.</p>
+            
+                <p>During his lifetime, the French showered Bullard with honors, and in 1954, he was one of three men chosen to relight the everlasting flame at the Tomb of the Unknown Soldier in Paris. In October 1959, he was awarded the Legion of Honor, which is the most prestigious order and decoration granted by France, making him a knight. This was the fifteenth honor he received from the French government.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal8">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/8.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Janet Harmon Bragg</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Janet Harmon Bragg was also an accomplished pianist. She performed regularly as a pianist and vocalist in a jazz band during the 1930s and 1940s, which was a rare accomplishment for a woman of color during that era. Bragg's musical talent earned her the nickname "the swinging pianist." Her love for music continued throughout her life, and she even played the organ at her church for many years.</p>
+                </div>
+    
+                <p><img class="prof" src="images/bragg.jpg" />After graduating with her nursing degree in Atlanta, Georgia, Janet Bragg moved to Chicago to work as a registered nurse. Inspired by flight, she enrolled at and graduated from the Aeronautical University in Chicago. As the only woman in a group of all male black flight students, she was shunned from the field that they considered a man's territory. However, Bragg had a high-paying job and earned the respect of her classmates when she bought a plane for student flight training. Later, she was instrumental in building the school and the airfield. Janet Bragg obtained her pilot's license in 1934. She co-founded the Challenger Air Pilots Association with Cornelius Coffey (Panel 13) and a group of African American aviation enthusiasts to acquire piloting skills. Bragg established America's first Civilian Pilot Training Program on a college campus exclusively for black people. Bragg was the first African-American woman to earn a commercial pilot license.</p>
+
+                <p>Bragg was  denied entry to the Women Airforce Service Pilots (WASP) due to her race., Bragg then applied to the military nurse corps but was informed they had reached their "colored quota."</p>
+
+                <hr />
+
+                <h2>Amelia Earhart</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Amelia Earhart recognized the importance of practicality and comfort in aviation attire and designed her own outfits for her flights, which often featured loose-fitting trousers and a leather jacket. Earhart launched her own clothing line called "Amelia Earhart Fashions." The clothes were sold at Macy's in New York and Marshall Field's in Chicago. The line was marketed as "clothes for the woman who lives actively," and its success allowed Earhart to continue funding her aviation endeavors.</p>
+                </div>
+    
+                <p><img class="prof" src="images/earhart.jpg" />Amelia Earhart was a trailblazing American aviation pioneer who shattered records and advocated for women's advancement in aviation. In 1932, she became the first woman to fly solo across the Atlantic Ocean. Earhart's numerous feats as a pilot brought her international fame and helped improve public acceptance of aviation. Tragically, she disappeared without a trace while attempting to fly around the world before her 40th birthday. With 7,000 miles remaining, the plane lost radio contact near the Howland Islands. Fondly known as "Lady Lindy," she disappeared without a trace in 1937 with navigator Fred Noonan, and the mystery of their disappearance remains unsolved to this day.</p>
+
+                <p>Despite her untimely end, Earhart's legacy as one of the world's most famous pilots remains an enduring symbol of determination and perseverance. She fearlessly challenged societal barriers and paved the way for women to pursue their passions. Her unwavering dedication to proving that women could succeed in their chosen fields, just as men did, earned her global admiration and fame. Her mysterious disappearance added to all of this and has given Earhart lasting recognition in popular culture as one of the world's most famous pilots. Even today, many people are still trying to solve the mystery of what happened to the woman who forever changed aviation </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal9">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/9.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Hazel Ying Lee</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Lee quickly emerged as a respected leader among her training class and was well-liked by her fellow female pilots. She proudly shared her Chinese heritage with them, often taking them to Chinese restaurants where she ordered in Chinese and introduced them to new dishes. In a fun and personal touch, Lee was known to write the names or nicknames of her classmates in Chinese characters with lipstick on the tail of the planes she flew.</p>
+                </div>
+    
+                <p><img class="prof" src="images/lee.jpg" />Hazel Ying Lee, the first Chinese American pilot to join the Women Airforce Service Pilots (WASP), faced gender discrimination when she tried to become a pilot for the Chinese Air Force during the Sino-Japanese conflict in the 1930s. In 1944, Lee was tasked with transporting a P-63 aircraft from a Bell Aircraft factory in Niagara Falls to Fargo, North Dakota. Tragically, while attempting to land in Fargo, Lee's plane collided with the wing of another P-63 due to confusion caused by the Air Traffic Control Tower. Hazel sustained fatal injuries in the crash, becoming the last of thirty-eight WASP members who lost their lives in the line of duty.</p>
+
+                <hr />
+
+                <h2>Frank Whittle</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Frank Whittle was dyslexic, which makes his academic and professional accomplishments even more impressive. Despite struggling with reading and writing, Whittle excelled in mathematics and had a natural aptitude for engineering. He suffered from a stutter throughout his life. Despite this, he excelled at public speaking and became a popular lecturer in the United States, where he was highly regarded for his expertise in jet propulsion technology. The Aerospace Museum of California has one of the first Whittle jet engines on display in our exhibit hall. </p>
+                </div>
+    
+                <p><img class="prof" src="images/whittle.jpg" />When Frank Whittle was just fifteen years old, he applied to join the Royal Air Force (RAF). However, his short stature of only five feet led to his rejection twice. Despite this setback, Whittle persisted and applied for a third time, finally being accepted as an apprentice. By the time he was twenty-one, he had become a pilot officer and authored a thesis titled "Future Development in Aircraft Design," which proposed that aircraft could reach faster speeds at higher altitudes. His theory was met with ridicule, and he struggled to secure funding. Whittle refused to give up and set out to create the world's first turbo-jet engine. Although the RAF initially rejected his patent, with the help of some friends, he was eventually able to test his engines and achieve the first successful flight on May 15th, 1941.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal10">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/10.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Roy D. Kelley</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>During World War II, McClellan Air Force Base in California played a crucial role in the maintenance of B-17 Flying Fortresses. Women and minorities, including African Americans and Japanese Americans, were trained as mechanics and electricians to maintain the aircraft. The Women's Army Corps (WAC) played a crucial role in filling many of the non-combat positions at McClellan AFB. The WACs, made up of over 150,000 women, were responsible for clerical work, supply duties, and transportation, with some working in more technical jobs. The contributions of women and minorities at McClellan AFB were crucial to the success of the B-17 program during World War II, ensuring that the aircraft remained in top condition and ready for combat at all times.</p>
+                </div>
+    
+                <p>Roy D. Kelley served as a waist gunner for the Eighth Air Force 306th Bomb Group, 423rd Squadron, stationed in Thurleigh, England, during World War II. Kelley participated in the largest bomber attack of the war when he flew on a B-17 during the mission to Lille, France, on October 9th, 1942. During his eight-month tour, Kelley amassed an impressive total of 516 hours of combat flight across twenty-five missions, the majority of which he served as the pilot in command. After completing his service with the 306th, Kelley returned to the United States to become an instructor. He retired with the rank of Lieutenant Colonel, having received two distinguished flying crosses after serving his country for 23 years.</p>
+            
+                <p>Lt. Col. Kelley represents the tens of thousands of WWII bomber aircrew who bravely served our nation. Being assigned to a bomber crew was considered a death sentence. Crews were incredibly brave, and they put their country before themselves. Approximately 71 percent, or over 100,000 aircrew, were either killed or labeled as "missing in action."</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/b17-423-306.jpg" alt="A B-17 Flying Fortress" style="width:600px;" />
+                        <figcaption>A B-17 Flying Fortress (RD-D, serial number 42-29524) nicknamed "Meat Hound" of the 423rd Bomb Squadron, 306th Bomb Group. (PHOTO: IWM, Roger Freeman Collection)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal11">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/11.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Bud Anderson</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>General Anderson attended Placer Union High School, then Sacramento Junior College (Sacramento City College) Airframes and Powerplants (A&P) aircraft mechanics program at the future McClellan AFB. This important regional training program, an educational partner with the Aerospace Museum of California, has been training our nation's aircraft mechanics and pilots for over 90 years.</p>
+                </div>
+    
+                <p>WWII Triple Ace, Brigadier General Clarence Emil "Bud" Anderson, was working at the Sacramento Air Depot on McClellan AFB when Pearl Harbor was attacked. Shortly after, he enlisted in the Army Air Corps and began pilot training. In his P-51 "Old Crow," Anderson shot down 16.25 enemies. Anderson was part of the 357th Fighter Group, and his success earned him numerous honors, including the Distinguished Flying Cross and the Air Medal. After the war, he continued his military career, serving in various roles, including as a test pilot and commander of the 355th Tactical Fighter Wing during the Vietnam War. Anderson retired from the Air Force in 1972 with the rank of colonel.</p>
+                
+                <p>After his highly decorated 30-year military career, Anderson worked for McDonnell Aircraft Company. After civilian retirement, Anderson and his family moved to Auburn, California, where he remains a highly sought-after speaker, author, and supporter of aviation. On December 2, 2022, at the age of 100, Anderson was promoted to the honorary rank of Brigadier General at the Aerospace Museum of California.</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/bud-anderson-pip.jpg" alt="Bud Anderson" style="width:600px;" />
+                        <figcaption>Clarence "Bud" Anderson photographed at his California home; inset: Anderson sitting on the wing of his P-51D Mustang "Old Crow.” (PHOTO: Cassisy Araiza, AARP.org)</figcaption>
+                    </figure>
+                </p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/bud-anderson-promo.jpg" alt="Bud Anderson promotion ceremony" style="width:600px;" />
+                        <figcaption>General C.E. “Bud” Anderson (100 years young!) celebrated his promotion to Brigadier General with a shot of “Old Crow” P-51 Mustang style with friends General Charles Q. Brown, Junior, the Chief of Staff of the U.S. Air Force, and Tom Jones, Executive Director of the Aerospace Museum of California. (PHOTO: Aerospace Museum of California)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal12">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/12.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Igor Ivanovich Sikorsky</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>During the Russian Revolution, Sikorsky was forced to flee the country and leave behind all of his aircraft manufacturing facilities and resources. He arrived in the United States in 1919 as a penniless refugee who had nothing but his knowledge and his talent. He quickly began to rebuild his career and soon gained a reputation as an expert in helicopter design. In 1923, Sikorsky founded the Sikorsky Aircraft Corporation, which would become one of the leading helicopter manufacturers in the world. In July 2013, Aerovelo-Atlas, the world's first human-powered helicopter, which hangs near this mural, was awarded a $250,000 prize by the Sikorsky Aircraft Corporation.</p>
+                </div>
+    
+                <p>From an early age, Igor Ivanovich Sikorsky was fascinated by aviation, inspired by his mother's introduction to Leonardo da Vinci's works on flying machines. This passion led him to design the first four-engine airplanes used as bombers during World War I.</p>
+                    
+                <p>However, Sikorsky's most notable achievement was the invention of the Vought-Sikorsky VS-300, which became the first successful American helicopter. Through this groundbreaking invention, Sikorsky introduced the rotor configuration that is still widely used in modern helicopters today.</p>
+
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/sikorsky-first-flight.png" alt="Sikorsky first flight" style="width:600px;" />
+                        <figcaption>The prototype VS-300 helicopter clears the ground for the first time, 14 September 1939. Igor Sikorsky is at the controls. (PHOTO: Sikorsky Historical Archives)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal13">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/13.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Cornelius Coffey</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Cornelius Coffey was married to Willa Brown, the first Black woman to receive her pilot's license in the U.S. Coffey and Brown met while they were both studying at the Coffey School of Aeronautics. They were married in 1939 and became a formidable team in the field of aviation, working together to promote the advancement of African Americans in the field of aviation. Together, Coffey, Brown, and Janet Bragg founded the National Airmen's Association of America (NAAA) in 1939, which was one of the first organizations dedicated to promoting the interests of Black pilots and aviation professionals.</p>
+                </div>
+    
+                <p>Cornelius Coffey paved the way for the integration of African American pilots into American aviation. Faced with discrimination by flight schools, Coffey and John C. Robinson built their own aircraft using a motorcycle engine and taught themselves to fly before, in turn, creating their own flight school. In the 1930s, the Coffey School of Aeronautics became the first recognized aviation school for African Americans in the United States. At the time, the aviation industry was very segregated, and there were few opportunities for black pilots to receive training or find employment in the field. Many Tuskegee Airmen got their start at Coffey's school.</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/coffey-piper.jpg" alt="Coffey standing next to his Piper Tri-Pacer" style="width:600px;" />
+                        <figcaption>Coffey standing next to his Piper Tri-Pacer. (PHOTO: Coffey School of Aeronautics)</figcaption>
+                    </figure>
+                </p>
+
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal14">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/14.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Chauncey Spencer and Dale L. White Sr.</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Their "Goodwill Tour" was a challenging undertaking, as the team faced numerous obstacles along the way. They encountered racial discrimination and harassment in some of the towns they visited, and their plane often broke down due to poor maintenance and rough conditions. However, they persevered and were eventually able to reach Washington, D.C., to meet with military officials and members of Congress to promote the integration of African Americans in the Army Air Corps.</p>
+                </div>
+    
+                <p>In 1939, Dale White and Chauncey Spencer set out on a daring mission to prove that African-American pilots were capable of performing complex aviation tasks. They successfully completed the "Goodwill Tour", a 3,000-mile round-trip journey from Chicago to New York and then to Washington, D.C., to lobby for legislative change to allow African Americans to join the U.S. Army Air Corps.</p>
+
+                <p>The flight was a success, garnering widespread attention and helping to pave the way for the integration of African-American pilots into the armed forces. In addition to the flight, the duo also visited the White House, met with the President, and spoke to members of the Congressional Committee on Aviation. The success of the tour helped to demonstrate the potential of African-American pilots and raised awareness of their capabilities.</p>
+
+
+                <div style="float:right;margin-left:20px;">
+                    <figure>
+                        <img src="images/spencer.jpg" />
+                        <figcaption>Chauncey Spencer</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="images/white.jpg" />
+                        <figcaption>Dale White</figcaption>
+                    </figure>
+                </div>
+                        
+                <p>Their chance meeting with then-Senator Harry S. Truman had a lasting impact. Truman commented, "If you guys had the guts to fly this thing to Washington, I've got guts enough to see you get what you are asking." Indeed, Truman helped pass legislation allowing African Americans to participate in the Civilian Pilot Training Program which led to formation of the Tuskegee Institute (now Tuskegee University), located near Tuskegee, Alabama. In 1948, President Truman integrated the armed services by presidential order.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal15">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/15.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Jack Northrop</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Northrop was a deeply spiritual person, and he believed that his work in aviation was a calling from God. He once said, "I have always felt that my work in aviation was something that I was divinely directed to do." His designs often displayed a profound spiritual perspective that emphasized beauty, elegance, and simplicity. He saw the natural world as a reflection of God's divine order and believed his aircraft designs should embody the same sense of harmony and balance.</p>
+                </div>
+    
+                <p><img class="prof" src="images/northrop.jpg" />The founder of Northrop Corporation, Jack Northrop, designed the flying wing, an aircraft with broad wings but no fuselage or tail. His first model was the XB-35, a heavy bomber aircraft that flew for the first time in 1946; this was quickly followed by the jet-propelled YB-49. Because of their sleek, futuristic design, his flying wing aircraft were frequently mistaken for UFOs. His original design for the YB-49 was later improved and used as the B-2 stealth bomber.</p>
+
+                <hr />
+
+                <h2>Benjamin O. Davis, Jr. </h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Davis was a pioneer in space exploration. Davis played a role in the early years of space exploration and was involved in the development of the first U.S. satellite, Explorer 1. The satellite was launched in 1958 and marked the beginning of the U.S. space program. He also served on the National Aeronautics and Space Council and was responsible for advising the President on space policy and coordinating U.S. space activities. He saw space exploration as a way to expand human knowledge and achieve great things, and he encouraged young people to pursue careers in science and engineering.</p>
+                </div>
+    
+                <p><img class="prof" src="images/davis.jpg" />Benjamin O. Davis, Jr., was in the first group of African Americans admitted to the Army Air Corps for pilot training. Davis faced discrimination and segregation during his early years in the military. He was assigned to an all-black unit and was not allowed to fly or train with white pilots.  Davis was assigned to lead the all-black 99th Pursuit Squadron at Tuskegee Army Airfield in Alabama, which later became known as the 99th Fighter Squadron. Under his leadership, the 99th trained rigorously and proved their ability to fly and fight as well as any other unit. In April 1943, the squadron was sent to North Africa, where it flew combat missions in the Mediterranean theater.</p>
+
+                <p>Davis went on to lead the 332nd Fighter Group, which included the 99th and three other African American fighter squadrons, and helped to integrate the U.S. military after the war. Davis was the first African American Major General in the United States Air Force, making him one of only a few Americans to receive a fifth star.</p>
+
+                <hr />
+
+                <h2>Chuck Yeager & the Bell X1</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>The Bell X-1 was a rocket-powered aircraft, meaning that it used rocket engines to propel itself through the air. It was powered by a four-chamber rocket engine that produced 6,000 pounds of thrust. The Bell X-1 was launched from a B-29 bomber at an altitude of 25,000 feet and then flown independently by the test pilot.  The aircraft was painted bright orange to make it more visible in the air and easier to spot in case of a crash.</p>
+                </div>
+    
+                <p><img class="prof" src="images/x1.jpg" />Double-ace pilot Chuck Yeager is best known for breaking the sound barrier on October 14, 1947, while piloting the Bell X-1 Glamorous Glennis. The X-1 reached Mach 1.06 at an altitude of 43,000 feet over the Mojave Desert. Yeager later went on to train pilots for the space program, with many of them serving in the Gemini, Mercury, and Apollo programs.</p>
+
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+    <div class="popup" id="modal16">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/16.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Mikhail Stepanovich Khomyakov</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Khomyakov was an accomplished athlete and competed in several sports, including skiing, volleyball, and soccer. He was known for his physical strength and agility. He was particularly skilled in skiing and was a member of the Soviet national ski team during the 1930s. He competed in several international ski races and helped lead the Soviet team to victory in the Nordic skiing competition at the 1936 Winter Olympics.</p>
+                </div>
+    
+                <p><img class="prof" src="images/khomyakov.jpg" />Mikhail Stepanovich Khomyakov was the chief engineer of Sputnik 1, the first artificial Earth satellite that was formed by the Soviet Space Program. This launch led to the Space Race, which involved the Soviet Union and the United States competing to see who would achieve human space exploration first. The Soviet Union's success in launching the first artificial satellite was a major blow to U.S. pride and spurred the U.S. to redouble its efforts to achieve its own space milestones.</p>
+
+                <hr />
+
+                <h2>Mary W. Jackson</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>As a young girl growing up in Hampton, Virginia, Mary Jackson was a member of the Girl Scouts of the USA. After retiring from NASA, Mary W. Jackson volunteered as a Girl Scout troop leader for more than 20 years and helped to organize science camps and other educational activities for the girls in her troop. She encouraged and mentored countless girls in her community to pursue science and engineering careers, inspiring them to pursue their dreams and reach for the stars.</p>
+                </div>
+    
+                <p><img class="prof" src="images/jackson.jpg" />Mathematician Mary W. Jackson worked as an aeronautical engineer, or a "human computer" at the National Advisory Committee for Aeronautics (NACA). During this time, she took engineering classes and was promoted to be the first Black female aeronautical engineer when NACA turned over operations to NASA. Her work provided NASA with data that informed the success of the space program, and she moved through the ranks, eventually becoming a senior engineer. When she was no longer able to advance in rank, Jackson switched roles and dedicated the rest of her career to assisting minorities, especially women, attain higher education and career opportunities.</p>
+                
+                <p>In 2019, she was posthumously awarded the Congressional Gold Medal for her groundbreaking work in aerospace engineering and her advocacy for equality and diversity in the field.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal17">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/17.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Mary Golda Ross</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Mary Golda Ross was a founding member of the Society of Women Engineers (SWE) and remained an active member throughout her life. She joined the organization in 1950, the same year it was established, and played a key role in helping to shape its mission and goals. Ross was recognized for her contributions to engineering and STEM education throughout her career. In 1982, she was awarded the Society of Women Engineers Achievement Award. Today, SWE has over 40,000 members worldwide and offers a wide range of programs and resources to support women at all stages of their engineering careers.</p>
+                </div>
+    
+                <p><img class="prof" src="images/ross.jpg" />During World War II, Mary Golda Ross, a member of the Cherokee Nation, was hired by Lockheed Aircraft Corporation in Burbank, California, to work as a mathematical research assistant as part of the Skunk Works team. Their mission was to enhance the performance of military fighter planes, including the P-38 Lightning, for the United States Army Air Forces. Ross' time with Skunk Works ignited a lasting fascination with the aerospace industry, and she went on to become the first Native American woman to work as an aeronautical engineer after the war.</p>
+            
+                <p>During the Cold War, Ross joined Lockheed Missiles and Space Company, where she contributed to the development of the Polaris missile and the Agena launch vehicle. Despite her significant contributions, much of her work during this time remains classified. Ross played a critical role in advancing aerospace technology during a critical period in history.</p>
+
+                <hr />
+
+                <h2>Katherine Johnson</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Katherine Johnson had a fun and competitive side. She loved playing bridge and often played with her colleagues at NASA during lunch breaks. She even wrote a book titled "Winning at Bridge," which was published in 1972. In 2016, Mattel released a Barbie doll in her likeness as part of their "Inspiring Women" series. She also had a satellite named the Katherine Johnson Earth Observing Satellite" (KJ-1), which was launched in 2021. The satellite was named in honor of Johnson's contributions to the field of space exploration and her advocacy for women and minorities in STEM fields.</p>
+                </div>
+    
+                <p><img class="prof" src="images/johnson.jpg" />As one of the first African Americans to be hired by NACA, Katherine Johnson worked as a "human computer" in the Flight Research Division. She provided mathematical data to engineers in the Space Task Group, a job that continued when NACA transitioned into NASA. Johnson provided trajectory analysis for Freedom 7, which was the U.S.'s "first human spaceflight," and became the first woman within the Flight Research Division to receive an author's credit on published research.</p>
+
+                <p>When astronaut John Glenn was preparing to become the first man to orbit the Earth, he specifically requested that Johnson double-check the computer's calculations for his mission. Johnson's precise calculations gave Glenn the confidence he needed to undertake this groundbreaking mission. Perhaps Johnson's most impressive achievement was her work on the Apollo 11 mission, which resulted in the first human landing on the moon. </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal18">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/18.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Alan Bartlett Shepard Jr.</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Shepard was a skilled artist and enjoyed painting in his free time. He even took tubes of watercolor paint with him on his spaceflights and created several paintings while in orbit. While in space, Shepard used specially designed, low-viscosity paints that were less likely to flake or smudge in the low-gravity environment. He painted several landscapes, including a painting of the lunar surface. Shepard's space paintings have been featured in exhibitions at the Smithsonian's National Air and Space Museum and the Kennedy Space Center Visitor Complex. In 2021, a selection of his paintings was sold at auction for over $190,000.</p>
+                </div>
+    
+                <p>Alan B. Shepard Jr. was one of the original seven astronauts chosen for the Mercury program by NASA. His 15-minute flight on Freedom 7 made him the second man in the world to go to space and the United States' first successful spaceflight, although he did not orbit Earth. He later became Chief of the Astronaut Office at NASA and trained other astronauts for future space missions. He spent a total of 33 hours on the moon, where he famously hit two golf balls, becoming the first person to play golf on the moon and make a "crater-in-one."</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/alan-shepard-capsule.jpg" alt="Alan Shepard in capsule" style="width:600px;" />
+                        <figcaption>Astronaut Alan Shepard, Jr., America s first man in space, poses in the Mercury space craft in 1961. (PHOTO: AP)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal19">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/19.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Yuri Alekseyevich Gagarin</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Gagarin was known for his sense of humor and playfulness. He often played practical jokes on his fellow cosmonauts and had a reputation for being a fun-loving and sociable person.  Gagarin's famous quote, "Poyekhali!" ("Let's go!"), was uttered as he was strapped into the Vostok 1 capsule just before liftoff. The phrase has since become synonymous with the start of the space age and is often used to inspire action and adventure.</p>
+                </div>
+    
+                <p><img class="prof" src="images/gagarin.jpg" />On April 12, 1961, Yuri Gagarin, a Soviet cosmonaut, made history by becoming the first human to venture into space during a 108-minute orbital flight. The Vostok 1 space capsule was launched from the top of a missile and made a single orbit before automated controls guided Gagarin back to Earth. Upon re-entry, Gagarin ejected from the capsule over a field. This groundbreaking achievement demonstrated that human space travel was feasible, inspiring further advancements in space exploration.</p>
+
+                <hr />
+
+                <h2>Valentina Tereshkova</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>At the age of 26, Valentina Tereshkova became the youngest woman to travel to space during her historic flight in 1963. Prior to her career as a cosmonaut, Tereshkova worked in a textile factory and pursued skydiving as a hobby. Her call sign during the Vostok 6 mission was "Chaika," which is Russian for "seagull." This name was chosen as a tribute to her background working in a parachute factory.</p>
+                </div>
+    
+                <p><img class="prof" src="images/tereshkova.jpg" />Valentina Tereshkova, a Soviet cosmonaut, achieved a historic milestone as the first woman to orbit the Earth aboard the Vostok 6 spacecraft on June 16, 1963. Over a period of 71 hours, Tereshkova completed 48t orbits before returning to Earth. Her background as an experienced parachutist was a key factor in her selection, as the Soviet Union sought to outpace the United States in the race to send women into space. Like its predecessor Vostok 1, the Vostok 6 spacecraft was not designed for a safe landing, but Tereshkova's parachuting skills enabled her to eject from the craft at 20,000 feet and survive.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal20">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/20.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Margaret Hamilton</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>In 1968, at a conference organized by NATO, Hamilton used the term "software engineering" to describe the process of designing, developing, and testing software in a systematic and structured manner, using principles similar to those used in traditional engineering disciplines. The term quickly gained popularity and has since become a standard way to refer to the field of software development.</p>
+                </div>
+    
+                <p>Computer scientist Margaret Hamilton was a founder of software engineering, a term she coined during the early days of computer technology. While working for NASA, Hamilton's specialty was software that could detect system errors, recover from them, and communicate this to the astronauts by interrupting their normal mission displays during an emergency. Her software became crucial during Apollo 11 when a radar switch had been moved into the wrong position, right before they landed on the moon, her software alerted the astronauts to the issue, and they were able to fix it and make a safe landing.</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/margaret-hamilton-mit-apollo-code.jpg" alt="Margaret Hamilton with computer code" style="width:600px;" />
+                        <figcaption>Computer scientist Margaret Hamilton poses with the Apollo guidance software she and her team developed at MIT. (PHOTO: MIT Museum)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal21">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/21.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Buzz Aldrin</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Buzz Aldrin's real name is Edwin Eugene Aldrin Jr. He got his famous nickname when his younger sister Fay Ann mispronounced "brother" as "buzzer." Aldrin legally changed his name to Buzz in 1988, two decades after his historic moon landing. He wanted to be known as "Buzz" because it reflected his high-energy personality and the excitement he felt about space exploration. The creators of "Toy Story" chose the name "Buzz" for the character of Buzz Lightyear for its cool, futuristic sound and to reflect the character's adventurous and optimistic spirit.</p>
+                </div>
+    
+                <p>Buzz Aldrin was part of the third group of astronauts selected by NASA and the first to have a doctoral degree. Aldrin's tenacity was put to the test during his spaceflight on Gemini XII, where he encountered a challenging situation during a spacewalk. He remained calm and focused, spending a record-breaking 5 hours in space.  During the Apollo 11 mission, he became the second person to walk on the moon, working tirelessly to set up equipment, plant the American flag, and collect moon rock samples.  Aldrin's exceptional skills and focus helped make the mission a resounding success, and his contribution to space exploration continues to inspire future generations to push the boundaries of human exploration.</p>
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/aldrin-in-lunarmodule.jpg" alt="Buzz Aldrin in lunar module" style="width:600px;" />
+                        <figcaption>This interior view of the Apollo 11 Lunar Module shows Buzz Aldrin, Jr., lunar module pilot, during the lunar landing mission. This picture was taken by Astronaut Neil Armstrong. (PHOTO: NASA)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal22">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/22.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Michael Collins</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>During his tenure as Director of the National Air and Space Museum, Michael Collins oversaw the acquisition of the Columbia, the command module of the Apollo 11 mission, Collins himself had flown the spacecraft during the historic mission in 1969. He even has a moon rock named after him. This special rock known as Lunar Sample 70017, was collected during the iconic Apollo 11 mission and weighs about 2 grams. This treasure is on display at the National Air and Space Museum for all to see.</p>
+                </div>
+    
+                <p><img class="prof" src="images/collins.jpg" />Astronaut Michael Collins was part of the third group of astronauts selected by NASA and, like Neil Armstrong, was a test pilot. His first flight into space as a pilot for Gemini 10. During the Apollo 11 mission, Collins piloted and remained in the command module while Armstrong and Aldrin stepped onto the moon. He spent a total of 266 hours in space during his career with NASA, and after retirement, he became the first director of the Smithsonian's National Air and Space Museum. </p>
+
+                <hr />
+
+                <h2>Neil Armstrong</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>While Armstrong is considered an American hero, he was not comfortable with the fame and attention that came with it. However, he was known for being a private person and did not agree with the idea of people exploiting his fame for financial gain. When he discovered that people were selling his autographs online, he chose to stop signing autographs to discourage this practice. Instead, he chose to use his fame for a greater good, spending much of his time working with the Astronaut Scholarship Foundation. He was dedicated to supporting education and inspiring young people to pursue careers in STEM fields. </p>
+                </div>
+    
+                <p><img class="prof" src="images/armstrong.jpg" />Neil Armstrong began his career at NACA as an engineer and test pilot, working with high-speed aircraft like the X-15. By the time he was selected as mission commander for Apollo 11, he was an experienced astronaut, having already flown with Gemini 8. He is best remembered as the first man to walk on the moon and for his now famous quote, "thats one small step for a man, one giant leap for mankind." After retiring from NASA, Armstrong became an aerospace engineering professor.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal23">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/23.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Guion S. Bluford Jr.</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>While Guion Bluford attended Pennsylvania State University he earned his black belt in the martial art.  He later continued to practice and compete in Tae Kwon Do while working as an astronaut at NASA.  Bluford was the first astronaut to test out a prototype of the exercise machine that is now used on the International Space Station, which he used to maintain his fitness and martial arts skills while in space.</p>
+                </div>
+    
+                <p><img class="prof" src="images/bluford.jpg" />In 1983, Guion Bluford became the first African American NASA astronaut to go to space. He worked as a mission specialist on the third Challenger flight and assisted in launching INSAT-1B, an Indian communications satellite. He went to space three more times for a total of 688 hours in space before leaving NASA.  </p>
+
+                <hr />
+
+                <h2>Eileen Collins</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Eileen Collins has visited more than 50 countries, Her travels have taken her to every continent, including remote and exotic destinations such as Antarctica, Australia, and the Amazon rainforest.  She has said that her travels have broadened her perspective on different cultures, customs, and traditions, and have given her a deeper appreciation for the diversity of the world.</p>
+
+                    <p>Collins also used her travels as an opportunity to inspire young students to pursue careers in science and technology. Through her travels, Collins has become a global ambassador for space exploration, education, and cultural understanding.</p>
+                </div>
+    
+                <p><img class="prof" src="images/ecollins.jpg" />Throughout her career, Eileen Collins accomplished numerous groundbreaking achievements. She made history as the first woman to serve as a flight instructor for the United States Air Force, and in 1995, she broke barriers again as the first female astronaut to pilot a NASA space shuttle. Collins made history again as the first female commander of a space shuttle, leading the Columbia crew in deploying the Chandra-X observatory.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal24">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/24.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Sally Ride</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Sally Ride was known for being a private person, and it wasn't until her death in 2012 that her same-sex relationship was publicly acknowledged in her obituary. In the obituary, it was revealed that she had been in a committed relationship with Tam O'Shaughnessy, a childhood friend, and fellow Stanford graduate, for 27 years. This made Sally Ride the first known LGBTQ astronaut.  After her death, Tam and Sally's sister co-founded Sally Ride Science, an organization dedicated to inspire and support girls and young women to pursue careers in STEM fields. The organization also provides resources and workshops for teachers to help them encourage their female students to explore and pursue STEM fields. </p>
+                </div>
+    
+                <p>During her studies in physics at Stanford University, Sally Ride responded to a NASA advertisement seeking young scientists, and was chosen as one of only five women among the candidates. Following her selection, she was later chosen as one of five crew members for the Space Shuttle Challenger STS-7 mission. On June 1st, 1983, Ride made history as the first American woman to journey into space, serving as a flight engineer during the mission.</p>
+
+
+                <p style="float:left;">
+                    <figure style="width:620px;">
+                        <img src="images/sally-ride-shuttle.jpg" alt="Sally Ride in the space shuttle" style="width:600px;" />
+                        <figcaption>Sally Ride communicating with ground controllers during the six-day space mission of the Challenger in 1983. (PHOTO: NASA)</figcaption>
+                    </figure>
+                </p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal25">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/25.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Mae Jemison</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Jemison also worked as a consultant for the TV series Star Trek: Enterprise, which aired from 2001 to 2005. Jemison worked with the show's writers and producers to ensure that the science and technology depicted on the show were as accurate and plausible as possible.  To this day, she continues to speak about the show's enduring legacy and its impact on science and society. Star Trek's message of inclusivity and diversity was a major influence on her own life and career, and that she hopes to inspire the next generation of explorers and innovators.</p>
+                </div>
+    
+                <p><img class="prof" src="images/jemison.jpg" />As a child, Mae Jemison was fascinated by Lieutenant Uhura of Star Trek fame and was disappointed by the lack of female astronauts during the Apollo missions she watched on TV. She was determined to fill this gap and pursue her ambition of traveling to space. At the age of sixteen, she graduated from high school early and enrolled in the University of Stanford. Later, she became a medical doctor and worked with the Peace Corps and in private practice until she saw Sally Ride make history as the first woman in space. Inspired to follow her own dream, Jemison applied to NASA in 1987, where she was selected as one of only fifteen candidates. She accomplished her goal of becoming the first African American woman in space on September 12th, 1992, aboard the Endeavor, and later became the first actual astronaut to appear on Star Trek, her favorite TV show from childhood.</p>
+
+                <hr />
+
+                <h2>Franklin Chang-Diaz</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Franklin Chang-Diaz is an accomplished classical and jazz guitarist.  He has even written his own songs, which he describes as a fusion of his Costa Rican heritage and his love of music.  His compositions reflect his diverse influences, incorporating elements of Latin American, jazz, and classical music.  He credits music as a source of balance and inspiration throughout his career as an astronaut and inventor.</p>
+                </div>
+    
+                <p><img class="prof" src="images/chang-diaz.jpg" />American astronaut Franklin Chang-Diaz graduated from MIT with a PhD in applied plasma physics. He was the first Hispanic to officially become a member of the U.S. Astronaut Corp with NASA. During his career, he made seven space flights, including three space walks, and assisted in the construction of the International Space Station. Upon retiring, he established the Ad Astra Rocket Company, where he currently serves as President. Additionally, he invented the VASIMR engine, which uses plasma propulsion technology.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal26">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/26.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Ellison S. Onizuka</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Ellison S. Onizuka worked at McClellan Air Force Base (AFB) from 1970-1975 as a flight test engineer and later as a maintenance officer for the F-4 Phantom aircraft. He was stationed at McClellan prior to being selected as a NASA astronaut in 1978. During his time at McClellan AFB, Onizuka was responsible for conducting and analyzing flight tests to evaluate the performance of the F-4 aircraft. This work helped him to acquire expertise in aircraft design, testing, and safety, all of which proved crucial for his future success as an astronaut.</p>
+                </div>
+    
+                <p><img class="prof" src="images/onizuka.jpg" />Ellison S. Onizuka was the first Japanese-American astronaut, the first Asian-American and first Buddhist to travel in space -- he was also the first Hawaiian, with Kona coffee to prove it! Onizuka served as a mission specialist on the Space Shuttle Discovery in 1985, where he was responsible for deploying two communication satellites.</p>
+
+                <p>Before becoming an astronaut, Onizuka served in the United States Air Force, where he worked as a flight test engineer and a test pilot. He was selected as an astronaut candidate by NASA in 1978 and completed his first spaceflight on the STS-51-C mission in January 1985.</p>
+    
+                <p>Onizuka was selected to serve on the ill-fated Challenger mission in January 1986, which ended in disaster when the shuttle exploded just 73 seconds after liftoff, killing all seven crew members. Onizuka was posthumously awarded the Congressional Space Medal of Honor for his service and sacrifice. He has been honored with numerous awards and memorials, including the Ellison S. Onizuka Space Center in Hawaii and the Onizuka Air Force Station in California. He is remembered as a hero and a trailblazer.</p>
+
+                <hr />
+
+                <h2>John Herrington</h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>During his space mission, STS-113, Herrington carried the Chickasaw Nation flag and a traditional flute, making him the first person to play a Native American flute in space. Imagine playing a traditional flute in zero gravity, talk about a cosmic jam session!</p>
+                </div>
+    
+                <p><img class="prof" src="images/herrington.jpg" />When Astronaut John Herrington flew on Space Shuttle Endeavour's STS-113 mission, he became the very first Native American to fly into space. Herrington is a registered member of the Chickasaw Nation, an indigenous tribe from Oklahoma.</p>
+
+                <p>Before his space voyage, he served in the Navy as a pilot and was later selected to become an astronaut candidate in 1996. He even led an underwater mission called NEEMO 6, where he and his crew lived and worked beneath the waves for 10 days. John retired from both the Navy and NASA in 2005, leaving behind an inspiring legacy of bravery and exploration.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal27">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/27.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>Swati Mohan</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>During NASA's Mars Perseverance mission, Swati Mohan collaborated with a team of scientists to include an artistic touch on the spacecraft. The rover carried a small aluminum plate attached to its chassis, engraved with a line drawing of the planet Mars made by artist Everett Gibson. The artwork added a unique artistic element to the scientific mission, showcasing the fusion of art and science in space exploration.</p>
+                </div>
+    
+                <p><img class="prof" src="images/mohan.jpg" />Swati Mohan is an Indian-American aerospace engineer who played a key role in NASA's Mars Perseverance mission as the guidance, navigation, and control operations lead. She was responsible for ensuring the safe landing of the Perseverance rover on the Martian surface on February 18, 2021. Mohan's team designed and executed the complex landing sequence, which involved a series of carefully timed maneuvers and an innovative new landing system called the "Sky Crane." The Mars Perseverance mission is NASA's latest and most advanced robotic mission to Mars, aimed at exploring the Red Planet's geology and searching for signs of ancient microbial life. Mohan was the voice that announced the successful landing of the Perseverance rover on Mars in February 2021. Her calm and composed demeanor during the critical moments of the landing captured the attention of people worldwide.</p>
+
+                <hr />
+
+                <h2>MiMi Aung</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>Mimi Aung has trained in various dance forms, including ballet, modern dance, and Bharatanatyam, a traditional Indian dance form known for its expressive movements and intricate footwork. Her experience in dance has taught her discipline, focus, and the ability to handle stress, which translate well into her role at NASA. Aung's dance background enhances her performance and highlights the profound impact of artistic disciplines on resilience and mental well-being in demanding professions like space exploration.</p>
+                </div>
+    
+                <p><img class="prof" src="images/aung.jpg" />MiMi Aung, is a Division Manager and Engineer at NASA's Jet Propulsion Laboratory (JPL). She led the Mars Ingenuity Helicopter program. Similar to the Wright Brothers' first flight on Earth, her team achieved the first flight on another planet!</p>
+                    
+                <p>MiMi has an extensive resume'. Before helicopters, she did all sorts of incredible things. She helped develop a special receiver system for communicating with distant spaceships. Then she figured out a technique to point giant antennas accurately. She even worked on an instrument that listened to microwave sounds from Earth's atmosphere. She managed high-tech systems for landing safely on other planets and flying close to asteroids. As Deputy Division Manager, Autonomous Systems, MiMi leads the development of autonomous robotics systems across our universe!</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal28">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+            
+            <div class="modal-panel">
+                <img src="panels/28.jpg"> 
+            </div>
+            <div class="modal-content">
+
+                <h2>James Webb Telescope</h2>
+                
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>The James Webb Space Telescope is the largest and most complex space science observatory ever built. It weighs 14,620 pounds (6,633 kilograms) and has a mirror that is over 21 feet (6.5 meters) in diameter, making it more than 100 times more powerful than the Hubble telescope. The sunshield of the James Webb Space Telescope is also an impressive feat of engineering, as it is roughly the size of a tennis court and is designed to protect the telescope's sensitive instruments from the heat of the sun.</p>
+                </div>
+    
+                <p><img class="prof" src="images/webb.jpg" />In 1989, before the launch of the Hubble telescope, NASA and the Space Telescope Science Institute (STSI) conceived the idea for the James Webb Space Telescope. They recognized the need for an infrared telescope that could build upon Hubble's discoveries with more advanced technology. Construction on the Webb telescope started in 2004, with the goal of launching it as soon as possible.</p>
+
+                <p>After years of planning and construction, the James Webb Space Telescope was finally launched on Christmas Day in 2021. It is currently orbiting one million miles from Earth, capturing breathtaking images of early galaxies and stars. The telescope's advanced infrared technology allows it to observe objects that are too faint or distant for other telescopes to see. As the successor to the Hubble telescope, the James Webb Space Telescope is expected to make groundbreaking discoveries that will deepen our understanding of the universe.</p>
+
+                <hr />
+
+                <h2>Artemis Program </h2>
+
+                <div class="diduknow">
+                    <h3>Did You Know?</h3>
+                    <p>In addition to establishing a sustainable human presence on the moon, the Artemis Program has a strong focus on promoting diversity and inclusion in space exploration. This includes a goal of landing the first woman and person of color on the moon, as well as recruiting a diverse range of astronauts and mission teams. NASA is also partnering with commercial and international space agencies to promote collaboration and diversity in space exploration. In fact, the Artemis Program has already provided opportunities for women and people of color to take on leadership roles in the program, including Kathy Lueders, the first woman to lead NASA's human spaceflight program, and Vanessa Wyche, the first Black woman to serve as director of NASA's Johnson Space Center.  The Artemis Program represents a bold and innovative approach to human space exploration that prioritizes scientific discovery, technological advancement, and diversity and inclusion.</p>
+                </div>
+    
+                <p><img class="prof" src="images/artemis.jpg" />The Artemis Program is NASA's ambitious plan to return humans to the moon by 2024 and establish a sustainable presence there by the end of the decade. This program aims to conduct scientific research and exploration that will help us better understand the moon and its potential resources, while also preparing for future crewed missions to Mars. The Artemis Program includes building the Space Launch System (SLS) rocket and Orion spacecraft, as well as developing new technologies and partnerships with commercial and international space agencies. This Artemis Program represents a significant step forward in human space exploration and could pave the way for even more ambitious missions in the future.</p>
+
+            </div>
+            <div style="clear:both;"></div>
+            <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+    <div class="popup" id="modal29">
+        <a class="popup__overlay" href="#"></a>
+        <div class="popup__wrapper">
+            <a class="popup__close2" href="#">Go back to mural</a>
+                <img src="images/amc-logo.png" style="width:400px;float:right;margin:70px 0 30px 30px;" alt="AMC Logo" />
+                <h2>Curator's Notes</h2>
+                <p>The traveling exhibit <em>African Americans in Aviation</em> visited the Aerospace Museum of California in August 2020. Curated by Chauncey Spencer II, the exhibit portrays the lives, struggles and histories of historic American Black Aviators - The Tuskegee Airmen, Female pilots and Astronauts.</p>
+
+                <p>Specifically, the stories of Chauncey Spencer, Dale White, James Banning, Janet Bragg, Cornelius Coffey, and many other early African American aviators inspired Tom Jones, Executive Director and Curator of the Aerospace Museum of California. As Tom learned more about these African American aviators he realized that most people, even aviation buffs, may not know the stories of these Hidden Heroes. He commissioned and named this mural the "Hidden Heroes of Aerospace" to help tell the stories of our collective history and infuse the hidden history of these key historical figures into the timeline of aerospace history to help educate future generations.</p>
+
+                <p>The 2016 movie "Hidden Figures" is loosely based on the non-fiction book of the same name by Margot Shetterly about three female African-American mathematicians: Katherine Johnson, Dorothy Vaughan, and Mary Jackson, who worked at NASA during the Space Race. Mural size limitations and the desire to highlight an additional Hidden Hero drove the selection, and addition of Mary Golda Ross to this mural.</p>
+
+                <p>The Aerospace Museum of California is grateful to Professor Randy Schuster, Professor Veronica Torres and the administration of American River College (ARC). Their leadership, assistance and funding were integral to help bring the vision of this mural to life. The museum would also like to thank and recognize the Art Professor Sarah Mattson, Historian Jessica Williams, and student artists Rachel Pineda, Brie MacGil, and Patris Miller for their outstanding work in researching, creating and painting this incredible piece of public art.</p>
+
+                <h2>Hidden Heroes Mural Team</h2>
+
+                <ul>
+                    <li><strong>Curator:</strong> Tom Jones, Executive Director</li>
+                    <li><strong>Assistant Curator:</strong> Karen Jones, Advancement Director</li>
+                    <li><strong>Research Historian:</strong> Jessica Williams, ARC Student</li>
+                    <li><strong>Artists:</strong>
+                    <ul>
+                        <li>Sarah Mattson, Art Professor</li>   
+                        <li>Rachel Pineda, ARC Art Student</li>
+                        <li>Brie MacGil, ARC Art Student</li>
+                        <li>Patris Miller, ARC Art Student</li>
+                    </ul></li>
+                    <li><strong>Faculty Advisor:</strong> Professor Randy Schuster, ARC Design Hub</li>
+                    <li><strong>Faculty Advisor:</strong> Professor Veronica Torres, ARC Design Hub</li>
+                    <li><strong>Installation and Lighting:</strong> Dave Long, AMC Board Member</li>
+                </ul>
+                <div style="clear:both;"></div>
+                <a class="popup__close2" href="#">Go back to mural</a>
+        </div>
+    </div>
+
+
+</body>
+</html>
